@@ -94,14 +94,11 @@ public class BrickerGameManager extends GameManager{
         float ballHeight = ball.getCenter().y()-ball.getDimensions().y();
         String prompt = "";
         if (ballHeight>windowDimensions.y()){
-            if (hearts.GetNumOFhearts()==1)
+            hearts.removeHeart();
+            paddle.setCenter(new Vector2(windowDimensions.x()/2, (int)windowDimensions.y()-30));
+            ball.setCenter(new Vector2(windowDimensions.x()/2, windowDimensions.y()-45));
+            if (hearts.GetNumOFhearts()==0)
                 prompt = "You lose!";
-            else{
-                hearts.removeHeart();
-                paddle.setCenter(new Vector2(windowDimensions.x()/2, (int)windowDimensions.y()-30));
-                ball.setCenter(new Vector2(windowDimensions.x()/2, windowDimensions.y()-45));
-            }
-
         }
         if (!prompt.isEmpty()){
             prompt+=" Do you want to play again?";
