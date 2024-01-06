@@ -1,23 +1,23 @@
 package bricker.gameobjects;
 
-import bricker.brick_strategies.CollisionStrategy;
 import danogl.GameObject;
 import danogl.collisions.Collision;
+import danogl.gui.Sound;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 
-public class Brick extends GameObject {
+public class Ball extends GameObject {
 
-    // Strategy for handling collisions involving the Brick
-    private CollisionStrategy collisionStrategy;
+    // Sound to be played on collision
+    private Sound collisionSound;
 
     // Constructor
-    public Brick(Vector2 topLeftCorner, Vector2 dimensions, Renderable renderable, CollisionStrategy collisionStrategy) {
+    public Ball(Vector2 topLeftCorner, Vector2 dimensions, Renderable renderable, Sound collisionSound) {
         // Call the superclass constructor
         super(topLeftCorner, dimensions, renderable);
 
-        // Set the collision strategy for the Brick
-        this.collisionStrategy = collisionStrategy;
+        // Initialize the collision sound
+        this.collisionSound = collisionSound;
     }
 
     /**
@@ -31,7 +31,13 @@ public class Brick extends GameObject {
         // Call the superclass method
         super.onCollisionEnter(other, collision);
 
-        // Delegate the collision handling to the associated CollisionStrategy
-        collisionStrategy.onCollision(this, other);
+        // Check if the collision involves a Heart
+        if (!(other instanceof Heart)) {
+            // Reverse the velocity based on the collision normal
+            setVelocity(getVelocity().flipped(collision.getNormal()));
+
+            // Play the collision sound
+            collisionSound.play();
+        }
     }
 }
